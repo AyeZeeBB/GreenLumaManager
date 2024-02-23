@@ -19,6 +19,7 @@ namespace GreenLumaManager
 {
     public partial class Form1 : Form
     {
+        List<AppIDItem> items = new List<AppIDItem>();
 
         string all_appids_json = "";
         JObject obj = null;
@@ -49,31 +50,13 @@ namespace GreenLumaManager
 
             if (string.IsNullOrEmpty(Settings.Default.SavedAppIds))
             {
-                button4.Text = "AppList Is Enabled!";
-                button4.ForeColor = Color.Green;
+                guna2Button4.Text = "AppList Is Enabled!";
+                guna2Button4.ForeColor = Color.White;
             }
             else
             {
-                button4.Text = "AppList Is Disabled";
-                button4.ForeColor = Color.Red;
-            }
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            // Create a new instance of FolderBrowserDialog
-            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
-
-            // Show the dialog and capture the result
-            DialogResult result = folderBrowserDialog.ShowDialog();
-
-            // Check if the user clicked OK
-            if (result == DialogResult.OK)
-            {
-                folder_path.Text = folderBrowserDialog.SelectedPath;
-                Settings.Default.FolderPath = folder_path.Text;
-                Settings.Default.Save();
-                RefreshListAsync();
+                guna2Button4.Text = "AppList Is Disabled";
+                guna2Button4.ForeColor = Color.Red;
             }
         }
 
@@ -90,9 +73,12 @@ namespace GreenLumaManager
             if(!Directory.Exists(folder_path.Text))
                 return;
 
+            foreach (AppIDItem item in items)
+                item.Dispose();
+
             string[] txtFiles = Directory.GetFiles(folder_path.Text, "*.txt");
-            List<string> raw_appids = new List<string>();
-            List<string> raw_names = new List<string>();
+
+            items = new List<AppIDItem>();
 
             foreach (string txtFile in txtFiles)
             {
@@ -105,47 +91,37 @@ namespace GreenLumaManager
                     string line;
                     while ((line = reader.ReadLine()) != null)
                     {
-                        raw_appids.Add(line);
+                        AppIDItem appid = new AppIDItem();
+                        appid.SetAppID(line);
+                        appid.Parent = flowLayoutPanel1;
+                        appid.appid_textbox.TextChanged += (sender, e) =>
+                        {
+                            appid.app_label.Text = GetAppLabel(appid.appid_textbox.Text);
+                        };
+                        appid.close_button.Click += (sender, e) =>
+                        {
+                            appid.Dispose();
+                            items.Remove(appid);
+                        };
+
+                        appid.app_label.Text = GetAppLabel(line);
+
+                        items.Add(appid);
                     }
                 }
             }
-
-            AppIds.Lines = raw_appids.ToArray();
-
-            //Add Names To List
-            foreach(string appid in raw_appids)
-            {
-                var appsArray = obj["applist"]["apps"];
-                int targetAppId = int.Parse(appid);
-                var targetApp = appsArray.FirstOrDefault(app => (int)app["appid"] == targetAppId);
-
-                if (targetApp != null)
-                    raw_names.Add((string)targetApp["name"]);
-                else
-                    raw_names.Add($"Couldnt Get {appid}'s Name");
-            }
-
-            richTextBox1.Lines = raw_names.ToArray();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private string GetAppLabel(string appid)
         {
-            DeleteOldFiles();
+            var appsArray = obj["applist"]["apps"];
+            int targetAppId = string.IsNullOrEmpty(appid) ? 0 : int.Parse(appid);
+            var targetApp = appsArray.FirstOrDefault(app => (int)app["appid"] == targetAppId);
 
-            string[] lines = AppIds.Lines;
-
-            int i = 0;
-            foreach (string line in lines)
-            {
-                using (StreamWriter writer = new StreamWriter(folder_path.Text + $"\\{i}.txt"))
-                {
-                    writer.WriteLine(line);
-                }
-
-                i++;
-            }
-
-            RefreshListAsync();
+            if (targetApp != null)
+                return (string)targetApp["name"];
+            else
+                return $"Couldnt Get Apps Name";
         }
 
         private void DeleteOldFiles()
@@ -165,20 +141,76 @@ namespace GreenLumaManager
 
         private void button4_Click(object sender, EventArgs e)
         {
+            
+        }
+
+        private void guna2Button1_Click(object sender, EventArgs e)
+        {
+            AppIDItem appid = new AppIDItem();
+            appid.SetAppID("730");
+            appid.Parent = flowLayoutPanel1;
+            appid.appid_textbox.TextChanged += (sender2, e2) =>
+            {
+                appid.app_label.Text = GetAppLabel(appid.appid_textbox.Text);
+            };
+            appid.close_button.Click += (sender2, e2) =>
+            {
+                appid.Dispose();
+                items.Remove(appid);
+            };
+
+            appid.app_label.Text = GetAppLabel("730");
+
+            items.Add(appid);
+        }
+
+        private void guna2Button3_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+            DialogResult result = folderBrowserDialog.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                folder_path.Text = folderBrowserDialog.SelectedPath;
+                Settings.Default.FolderPath = folder_path.Text;
+                Settings.Default.Save();
+                RefreshListAsync();
+            }
+        }
+
+        private void guna2Button2_Click(object sender, EventArgs e)
+        {
+            DeleteOldFiles();
+
+            int i = 0;
+            foreach (AppIDItem item in items)
+            {
+                using (StreamWriter writer = new StreamWriter(folder_path.Text + $"\\{i}.txt"))
+                {
+                    writer.WriteLine(item.appid_textbox.Text);
+                }
+
+                i++;
+            }
+
+            RefreshListAsync();
+        }
+
+        private void guna2Button4_Click(object sender, EventArgs e)
+        {
             if (string.IsNullOrEmpty(Settings.Default.SavedAppIds))
             {
                 DeleteOldFiles();
 
-                string[] lines = AppIds.Lines;
                 string finished = "";
 
                 int i = 0;
-                foreach(string line in lines)
+                foreach (AppIDItem item in items)
                 {
-                    if(i == 0)
-                        finished += line;
+                    if (i == 0)
+                        finished += item.appid_textbox.Text;
                     else
-                        finished += "," + line;
+                        finished += "," + item.appid_textbox.Text;
 
                     i++;
                 }
@@ -186,11 +218,10 @@ namespace GreenLumaManager
                 Settings.Default.SavedAppIds = finished;
                 Settings.Default.Save();
 
-                AppIds.Clear();
-                richTextBox1.Clear();
-                
-                button4.Text = "AppList Is Disabled";
-                button4.ForeColor = Color.Red;
+                RefreshListAsync();
+
+                guna2Button4.Text = "AppList Is Disabled";
+                guna2Button4.ForeColor = Color.Red;
             }
             else
             {
@@ -212,8 +243,8 @@ namespace GreenLumaManager
                 Settings.Default.SavedAppIds = "";
                 Settings.Default.Save();
 
-                button4.Text = "AppList Is Enabled!";
-                button4.ForeColor = Color.Green;
+                guna2Button4.Text = "AppList Is Enabled!";
+                guna2Button4.ForeColor = Color.White;
             }
         }
     }

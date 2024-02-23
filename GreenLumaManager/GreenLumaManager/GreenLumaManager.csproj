@@ -36,6 +36,9 @@
     <ApplicationIcon>luma.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Guna.UI2">
+      <HintPath>D:\R5Reloaded Stuff\Zee_Map_Tool\Guna.UI2.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -99,6 +102,7 @@
   <ItemGroup>
     <Content Include="6002f9d851c2ec00048c6c78.ico" />
     <Content Include="luma.ico" />
+    <None Include="luma.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

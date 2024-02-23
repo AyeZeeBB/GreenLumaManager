@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Guna.UI2.WinForms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,21 +15,22 @@ namespace GreenLumaManager
     {
         public string appid_value = "0";
         public int position;
-        public Button close_button;
-        public Button save_button;
+        public Guna2Button close_button;
+        public Guna2TextBox appid_textbox;
+        public Guna2HtmlLabel app_label;
 
         public AppIDItem()
         {
             InitializeComponent();
         }
 
-        public void SetAppID(string appid, int i)
+        public void SetAppID(string appid)
         {
-            textBox1.Text = appid;
+            guna2TextBox1.Text = appid;
             appid_value = appid;
-            position = i;
-            close_button = button1;
-            save_button = button2;
+            close_button = guna2Button1;
+            appid_textbox = guna2TextBox1;
+            app_label = guna2HtmlLabel1;
         }
 
         private void AppIDItem_Load(object sender, EventArgs e)
