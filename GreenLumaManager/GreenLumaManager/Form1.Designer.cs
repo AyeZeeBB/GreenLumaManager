@@ -248,9 +248,9 @@
             this.guna2HtmlLabel4.ForeColor = System.Drawing.Color.White;
             this.guna2HtmlLabel4.Location = new System.Drawing.Point(34, 5);
             this.guna2HtmlLabel4.Name = "guna2HtmlLabel4";
-            this.guna2HtmlLabel4.Size = new System.Drawing.Size(158, 19);
+            this.guna2HtmlLabel4.Size = new System.Drawing.Size(154, 19);
             this.guna2HtmlLabel4.TabIndex = 19;
-            this.guna2HtmlLabel4.Text = "Green Luma App Manager";
+            this.guna2HtmlLabel4.Text = "GreenLuma App Manager";
             // 
             // guna2PictureBox1
             // 
