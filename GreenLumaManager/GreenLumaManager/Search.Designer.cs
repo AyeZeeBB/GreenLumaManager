@@ -43,9 +43,12 @@
             this.guna2DragControl3 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
             this.guna2DragControl2 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
             this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
-            this.guna2ProgressBar1 = new Guna.UI2.WinForms.Guna2ProgressBar();
+            this.guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
+            this.search_label = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.searching = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2Panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox1)).BeginInit();
+            this.guna2Panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // search_text
@@ -65,7 +68,7 @@
             this.search_text.ForeColor = System.Drawing.Color.White;
             this.search_text.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.search_text.HoverState.Parent = this.search_text;
-            this.search_text.Location = new System.Drawing.Point(12, 54);
+            this.search_text.Location = new System.Drawing.Point(12, 42);
             this.search_text.Name = "search_text";
             this.search_text.PasswordChar = '\0';
             this.search_text.PlaceholderForeColor = System.Drawing.Color.White;
@@ -143,11 +146,11 @@
             this.guna2HtmlLabel3.BackColor = System.Drawing.Color.Transparent;
             this.guna2HtmlLabel3.Font = new System.Drawing.Font("Nirmala UI", 10F);
             this.guna2HtmlLabel3.ForeColor = System.Drawing.Color.White;
-            this.guna2HtmlLabel3.Location = new System.Drawing.Point(12, 33);
+            this.guna2HtmlLabel3.Location = new System.Drawing.Point(12, 21);
             this.guna2HtmlLabel3.Name = "guna2HtmlLabel3";
-            this.guna2HtmlLabel3.Size = new System.Drawing.Size(42, 19);
+            this.guna2HtmlLabel3.Size = new System.Drawing.Size(45, 19);
             this.guna2HtmlLabel3.TabIndex = 18;
-            this.guna2HtmlLabel3.Text = "Search";
+            this.guna2HtmlLabel3.Text = "Search: ";
             // 
             // guna2Button2
             // 
@@ -158,7 +161,7 @@
             this.guna2Button2.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.guna2Button2.ForeColor = System.Drawing.Color.White;
             this.guna2Button2.HoverState.Parent = this.guna2Button2;
-            this.guna2Button2.Location = new System.Drawing.Point(12, 360);
+            this.guna2Button2.Location = new System.Drawing.Point(12, 348);
             this.guna2Button2.Name = "guna2Button2";
             this.guna2Button2.ShadowDecoration.Parent = this.guna2Button2;
             this.guna2Button2.Size = new System.Drawing.Size(673, 28);
@@ -174,7 +177,7 @@
             this.checkedListBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.checkedListBox1.ForeColor = System.Drawing.Color.White;
             this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(12, 82);
+            this.checkedListBox1.Location = new System.Drawing.Point(12, 70);
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.ScrollAlwaysVisible = true;
             this.checkedListBox1.Size = new System.Drawing.Size(673, 272);
@@ -189,7 +192,7 @@
             this.guna2Button3.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.guna2Button3.ForeColor = System.Drawing.Color.White;
             this.guna2Button3.HoverState.Parent = this.guna2Button3;
-            this.guna2Button3.Location = new System.Drawing.Point(561, 54);
+            this.guna2Button3.Location = new System.Drawing.Point(561, 42);
             this.guna2Button3.Name = "guna2Button3";
             this.guna2Button3.ShadowDecoration.Parent = this.guna2Button3;
             this.guna2Button3.Size = new System.Drawing.Size(124, 22);
@@ -213,23 +216,48 @@
             // 
             this.guna2DragControl1.TargetControl = this.guna2Panel1;
             // 
-            // guna2ProgressBar1
+            // guna2Panel2
             // 
-            this.guna2ProgressBar1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(55)))));
-            this.guna2ProgressBar1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
-            this.guna2ProgressBar1.BorderRadius = 2;
-            this.guna2ProgressBar1.BorderThickness = 1;
-            this.guna2ProgressBar1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
-            this.guna2ProgressBar1.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Horizontal;
-            this.guna2ProgressBar1.Location = new System.Drawing.Point(0, 394);
-            this.guna2ProgressBar1.Maximum = 10;
-            this.guna2ProgressBar1.Name = "guna2ProgressBar1";
-            this.guna2ProgressBar1.ShadowDecoration.Parent = this.guna2ProgressBar1;
-            this.guna2ProgressBar1.Size = new System.Drawing.Size(697, 10);
-            this.guna2ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-            this.guna2ProgressBar1.TabIndex = 23;
-            this.guna2ProgressBar1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
-            this.guna2ProgressBar1.Visible = false;
+            this.guna2Panel2.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(75)))), ((int)(((byte)(226)))));
+            this.guna2Panel2.BorderRadius = 2;
+            this.guna2Panel2.BorderThickness = 2;
+            this.guna2Panel2.Controls.Add(this.searching);
+            this.guna2Panel2.Controls.Add(this.search_label);
+            this.guna2Panel2.Controls.Add(this.guna2HtmlLabel3);
+            this.guna2Panel2.Controls.Add(this.guna2Button3);
+            this.guna2Panel2.Controls.Add(this.checkedListBox1);
+            this.guna2Panel2.Controls.Add(this.guna2Button2);
+            this.guna2Panel2.Controls.Add(this.search_text);
+            this.guna2Panel2.Location = new System.Drawing.Point(0, 12);
+            this.guna2Panel2.Name = "guna2Panel2";
+            this.guna2Panel2.ShadowDecoration.Parent = this.guna2Panel2;
+            this.guna2Panel2.Size = new System.Drawing.Size(697, 392);
+            this.guna2Panel2.TabIndex = 24;
+            // 
+            // search_label
+            // 
+            this.search_label.BackColor = System.Drawing.Color.Transparent;
+            this.search_label.Font = new System.Drawing.Font("Nirmala UI", 10F);
+            this.search_label.ForeColor = System.Drawing.Color.White;
+            this.search_label.Location = new System.Drawing.Point(63, 21);
+            this.search_label.Name = "search_label";
+            this.search_label.Size = new System.Drawing.Size(170, 19);
+            this.search_label.TabIndex = 24;
+            this.search_label.Text = "Please search for somthing...";
+            // 
+            // searching
+            // 
+            this.searching.AutoSize = false;
+            this.searching.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
+            this.searching.Font = new System.Drawing.Font("Nirmala UI", 14F, System.Drawing.FontStyle.Bold);
+            this.searching.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(75)))), ((int)(((byte)(226)))));
+            this.searching.Location = new System.Drawing.Point(13, 71);
+            this.searching.Name = "searching";
+            this.searching.Size = new System.Drawing.Size(654, 270);
+            this.searching.TabIndex = 25;
+            this.searching.Text = "Searching...";
+            this.searching.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.searching.Visible = false;
             // 
             // Search
             // 
@@ -237,13 +265,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
             this.ClientSize = new System.Drawing.Size(697, 405);
-            this.Controls.Add(this.guna2ProgressBar1);
-            this.Controls.Add(this.guna2Button3);
-            this.Controls.Add(this.checkedListBox1);
-            this.Controls.Add(this.guna2Button2);
-            this.Controls.Add(this.guna2HtmlLabel3);
             this.Controls.Add(this.guna2Panel1);
-            this.Controls.Add(this.search_text);
+            this.Controls.Add(this.guna2Panel2);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Search";
@@ -253,8 +276,9 @@
             this.guna2Panel1.ResumeLayout(false);
             this.guna2Panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox1)).EndInit();
+            this.guna2Panel2.ResumeLayout(false);
+            this.guna2Panel2.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -274,6 +298,8 @@
         private Guna.UI2.WinForms.Guna2DragControl guna2DragControl3;
         private Guna.UI2.WinForms.Guna2DragControl guna2DragControl2;
         private Guna.UI2.WinForms.Guna2DragControl guna2DragControl1;
-        private Guna.UI2.WinForms.Guna2ProgressBar guna2ProgressBar1;
+        private Guna.UI2.WinForms.Guna2Panel guna2Panel2;
+        private Guna.UI2.WinForms.Guna2HtmlLabel search_label;
+        private Guna.UI2.WinForms.Guna2HtmlLabel searching;
     }
 }

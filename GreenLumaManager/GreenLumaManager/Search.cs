@@ -29,62 +29,63 @@ namespace GreenLumaManager
             
         }
 
+        void UpdateUI(Action action)
+        {
+            if (action == null) return;
+            Invoke((MethodInvoker)delegate { action(); });
+        }
+
         private void PopulateList(string search)
         {
-            guna2Button3.Invoke((MethodInvoker)delegate
-            {
-                guna2Button3.Enabled = false;
-            });
-
-            guna2Button2.Invoke((MethodInvoker)delegate
-            {
-                guna2Button2.Enabled = false;
-            });
-
-            checkedListBox1.Invoke((MethodInvoker)delegate {
-                checkedListBox1.Items.Clear();
-            });
-
-            guna2ProgressBar1.Invoke((MethodInvoker)delegate {
-                guna2ProgressBar1.Visible = true;
-            });
-
+            UpdateUI(() => guna2Button3.Enabled = false);
+            UpdateUI(() => guna2Button2.Enabled = false);
+            UpdateUI(() => checkedListBox1.Items.Clear());
             list.Clear();
 
             var appsArray = obj["applist"]["apps"] as JArray;
 
-            foreach (var app in appsArray)
+            Parallel.ForEach(appsArray, app =>
             {
-                string appname = (string)app["name"];
-                if (!appname.ToLower().Contains(search))
-                    continue;
-
-                list.Add((int)app["appid"]);
-                checkedListBox1.Invoke((MethodInvoker)delegate {
-                    checkedListBox1.Items.Add($"{appname} | ({(int)app["appid"]})");
-                });
-            }
-
-            guna2Button3.Invoke((MethodInvoker)delegate
-            {
-                guna2Button3.Enabled = true;
+                string appName = (string)app["name"];
+                if (appName.ToLower().Contains(search))
+                {
+                    int appId = (int)app["appid"];
+                    list.Add(appId);
+                    checkedListBox1.Invoke((MethodInvoker)delegate {
+                        checkedListBox1.Items.Add($"{appName} | ({(int)app["appid"]})");
+                    });
+                }
             });
 
-            guna2Button2.Invoke((MethodInvoker)delegate
+            search_label.Invoke((MethodInvoker)delegate
             {
-                guna2Button2.Enabled = true;
+                if (list.Count == 0)
+                {
+                    search_label.ForeColor = Color.Red;
+                    search_label.Text = $"Found 0 results";
+                }
+                else
+                {
+                    search_label.ForeColor = Color.Green;
+                    search_label.Text = $"Found {list.Count} results";
+                }
             });
 
-            guna2ProgressBar1.Invoke((MethodInvoker)delegate {
-                guna2ProgressBar1.Visible = false;
-            });
+            UpdateUI(() => guna2Button3.Enabled = true);
+            UpdateUI(() => guna2Button2.Enabled = true);
+            UpdateUI(() => searching.Visible = false);
         }
 
         private void guna2Button3_Click(object sender, EventArgs e)
         {
             if (search_text.Text.Length < 3)
+            {
+                search_label.ForeColor = Color.Red;
+                search_label.Text = $"Please enter more then 3 characters";
                 return;
+            }
 
+            searching.Visible = true;
             Thread newThread = new Thread(() => PopulateList(search_text.Text.ToLower()));
             newThread.Start();
         }
