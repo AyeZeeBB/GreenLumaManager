@@ -231,7 +231,7 @@
             this.guna2Panel2.Location = new System.Drawing.Point(0, 12);
             this.guna2Panel2.Name = "guna2Panel2";
             this.guna2Panel2.ShadowDecoration.Parent = this.guna2Panel2;
-            this.guna2Panel2.Size = new System.Drawing.Size(697, 392);
+            this.guna2Panel2.Size = new System.Drawing.Size(697, 387);
             this.guna2Panel2.TabIndex = 24;
             // 
             // search_label
@@ -264,7 +264,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
-            this.ClientSize = new System.Drawing.Size(697, 405);
+            this.ClientSize = new System.Drawing.Size(697, 401);
             this.Controls.Add(this.guna2Panel1);
             this.Controls.Add(this.guna2Panel2);
             this.DoubleBuffered = true;
