@@ -49,12 +49,12 @@ namespace GreenLumaManager
 
             if (string.IsNullOrEmpty(Settings.Default.SavedAppIds))
             {
-                button4.Text = "Demos Are Enabled!";
+                button4.Text = "AppList Is Enabled!";
                 button4.ForeColor = Color.Green;
             }
             else
             {
-                button4.Text = "Demos Are Disabled";
+                button4.Text = "AppList Is Disabled";
                 button4.ForeColor = Color.Red;
             }
         }
@@ -189,7 +189,7 @@ namespace GreenLumaManager
                 AppIds.Clear();
                 richTextBox1.Clear();
                 
-                button4.Text = "Demos Are Disabled";
+                button4.Text = "AppList Is Disabled";
                 button4.ForeColor = Color.Red;
             }
             else
@@ -212,7 +212,7 @@ namespace GreenLumaManager
                 Settings.Default.SavedAppIds = "";
                 Settings.Default.Save();
 
-                button4.Text = "Demos Are Enabled!";
+                button4.Text = "AppList Is Enabled!";
                 button4.ForeColor = Color.Green;
             }
         }
