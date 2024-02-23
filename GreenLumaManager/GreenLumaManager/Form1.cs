@@ -60,11 +60,6 @@ namespace GreenLumaManager
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            RefreshListAsync();
-        }
-
         private void RefreshListAsync()
         {
             if (folder_path.Text == "")
@@ -91,22 +86,7 @@ namespace GreenLumaManager
                     string line;
                     while ((line = reader.ReadLine()) != null)
                     {
-                        AppIDItem appid = new AppIDItem();
-                        appid.SetAppID(line);
-                        appid.Parent = flowLayoutPanel1;
-                        appid.appid_textbox.TextChanged += (sender, e) =>
-                        {
-                            appid.app_label.Text = GetAppLabel(appid.appid_textbox.Text);
-                        };
-                        appid.close_button.Click += (sender, e) =>
-                        {
-                            appid.Dispose();
-                            items.Remove(appid);
-                        };
-
-                        appid.app_label.Text = GetAppLabel(line);
-
-                        items.Add(appid);
+                        AddAppID(line);
                     }
                 }
             }
@@ -139,29 +119,9 @@ namespace GreenLumaManager
             Settings.Default.Save();
         }
 
-        private void button4_Click(object sender, EventArgs e)
-        {
-            
-        }
-
         private void guna2Button1_Click(object sender, EventArgs e)
         {
-            AppIDItem appid = new AppIDItem();
-            appid.SetAppID("730");
-            appid.Parent = flowLayoutPanel1;
-            appid.appid_textbox.TextChanged += (sender2, e2) =>
-            {
-                appid.app_label.Text = GetAppLabel(appid.appid_textbox.Text);
-            };
-            appid.close_button.Click += (sender2, e2) =>
-            {
-                appid.Dispose();
-                items.Remove(appid);
-            };
-
-            appid.app_label.Text = GetAppLabel("730");
-
-            items.Add(appid);
+            AddAppID("730");
         }
 
         private void guna2Button3_Click(object sender, EventArgs e)
@@ -246,6 +206,34 @@ namespace GreenLumaManager
                 guna2Button4.Text = "AppList Is Enabled!";
                 guna2Button4.ForeColor = Color.White;
             }
+        }
+
+        public void AddAppID(string _appid)
+        {
+            AppIDItem appid = new AppIDItem();
+            appid.SetAppID(_appid);
+            appid.Parent = flowLayoutPanel1;
+            appid.appid_textbox.TextChanged += (sender, e) =>
+            {
+                appid.app_label.Text = GetAppLabel(appid.appid_textbox.Text);
+            };
+            appid.close_button.Click += (sender, e) =>
+            {
+                appid.Dispose();
+                items.Remove(appid);
+            };
+
+            appid.app_label.Text = GetAppLabel(_appid);
+
+            items.Add(appid);
+        }
+
+        private void guna2Button5_Click(object sender, EventArgs e)
+        {
+            Search search = new Search();
+            search.mainForm = this;
+            search.obj = obj;
+            search.Show();
         }
     }
 
