@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -46,13 +47,13 @@ namespace GreenLumaManager
 
             Parallel.ForEach(appsArray, app =>
             {
-                string appName = (string)app["name"];
+                string appName = Regex.Replace((string)app["name"], "[^a-zA-Z0-9\\s-]", ""); ;
                 if (appName.ToLower().Contains(search))
                 {
                     int appId = (int)app["appid"];
                     list.Add(appId);
                     checkedListBox1.Invoke((MethodInvoker)delegate {
-                        checkedListBox1.Items.Add($"{appName} | ({(int)app["appid"]})");
+                        checkedListBox1.Items.Add($"{(int)app["appid"]} : {appName}");
                     });
                 }
             });

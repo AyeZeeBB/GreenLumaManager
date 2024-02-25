@@ -44,8 +44,8 @@
             this.guna2DragControl2 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
             this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
             this.guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
-            this.search_label = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.searching = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.search_label = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2Panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox1)).BeginInit();
             this.guna2Panel2.SuspendLayout();
@@ -234,17 +234,6 @@
             this.guna2Panel2.Size = new System.Drawing.Size(697, 387);
             this.guna2Panel2.TabIndex = 24;
             // 
-            // search_label
-            // 
-            this.search_label.BackColor = System.Drawing.Color.Transparent;
-            this.search_label.Font = new System.Drawing.Font("Nirmala UI", 10F);
-            this.search_label.ForeColor = System.Drawing.Color.White;
-            this.search_label.Location = new System.Drawing.Point(63, 21);
-            this.search_label.Name = "search_label";
-            this.search_label.Size = new System.Drawing.Size(170, 19);
-            this.search_label.TabIndex = 24;
-            this.search_label.Text = "Please search for somthing...";
-            // 
             // searching
             // 
             this.searching.AutoSize = false;
@@ -258,6 +247,17 @@
             this.searching.Text = "Searching...";
             this.searching.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             this.searching.Visible = false;
+            // 
+            // search_label
+            // 
+            this.search_label.BackColor = System.Drawing.Color.Transparent;
+            this.search_label.Font = new System.Drawing.Font("Nirmala UI", 10F);
+            this.search_label.ForeColor = System.Drawing.Color.White;
+            this.search_label.Location = new System.Drawing.Point(63, 21);
+            this.search_label.Name = "search_label";
+            this.search_label.Size = new System.Drawing.Size(170, 19);
+            this.search_label.TabIndex = 24;
+            this.search_label.Text = "Please search for somthing...";
             // 
             // Search
             // 

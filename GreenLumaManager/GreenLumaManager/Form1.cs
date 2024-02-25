@@ -14,6 +14,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace GreenLumaManager
 {
@@ -99,7 +100,7 @@ namespace GreenLumaManager
             var targetApp = appsArray.FirstOrDefault(app => (int)app["appid"] == targetAppId);
 
             if (targetApp != null)
-                return (string)targetApp["name"];
+                return Regex.Replace((string)targetApp["name"], "[^a-zA-Z0-9\\s-]", "");
             else
                 return $"Couldnt Get Apps Name";
         }
