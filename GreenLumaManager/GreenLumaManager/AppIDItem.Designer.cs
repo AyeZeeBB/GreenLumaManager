@@ -46,6 +46,7 @@
             // 
             // guna2TextBox1
             // 
+            this.guna2TextBox1.Animated = true;
             this.guna2TextBox1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(136)))), ((int)(((byte)(147)))));
             this.guna2TextBox1.BorderRadius = 2;
             this.guna2TextBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -95,6 +96,7 @@
             // guna2Button1
             // 
             this.guna2Button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.guna2Button1.Animated = true;
             this.guna2Button1.BackColor = System.Drawing.Color.Transparent;
             this.guna2Button1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(136)))), ((int)(((byte)(147)))));
             this.guna2Button1.BorderRadius = 1;
@@ -138,6 +140,7 @@
             // guna2Button2
             // 
             this.guna2Button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.guna2Button2.Animated = true;
             this.guna2Button2.BackColor = System.Drawing.Color.Transparent;
             this.guna2Button2.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(136)))), ((int)(((byte)(147)))));
             this.guna2Button2.BorderRadius = 1;

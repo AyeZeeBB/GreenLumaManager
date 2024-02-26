@@ -91,14 +91,14 @@ namespace GreenLumaManager
             newThread.Start();
         }
 
-        private void guna2Button2_Click(object sender, EventArgs e)
+        private async void guna2Button2_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < checkedListBox1.Items.Count; i++)
             {
                 bool isChecked = checkedListBox1.GetItemChecked(i);
                 if(isChecked)
                 {
-                    mainForm.AddAppID(list[i].ToString());
+                    await mainForm.AddAppID(list[i].ToString());
                     checkedListBox1.SetItemChecked(i, false);
                 }
             }

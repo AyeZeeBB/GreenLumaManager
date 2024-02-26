@@ -135,48 +135,44 @@ namespace GreenLumaManager
             }
 
             string imagePath = Path.Combine(cacheFolderPath, $"{appId}.jpg");
+            string jsonPath = Path.Combine(cacheFolderPath, $"{appId}.json");
 
             JObject jsonResponse = null;
 
-            if (!File.Exists(imagePath))
+            if (!File.Exists(jsonPath))
             {
                 using (HttpClient httpClient = new HttpClient())
                 {
                     var response = await httpClient.GetAsync($"https://store.steampowered.com/api/appdetails?appids={appId}");
-                    jsonResponse = JObject.Parse(await response.Content.ReadAsStringAsync());
+                    var content = await response.Content.ReadAsStringAsync();
+                    jsonResponse = JObject.Parse(content);
 
-                    if (!bool.TryParse(jsonResponse[appId]?["success"]?.ToString(), out bool success) || !success)
+                    File.WriteAllText(jsonPath, content);
+
+                    if (!bool.TryParse(jsonResponse?[appId]?["success"]?.ToString(), out bool success) || !success)
                         return new List<string>() { "", "", "" };
 
-                    string imageUrl = jsonResponse[appId]["data"]["capsule_image"]?.ToString();
+                    string imageUrl = jsonResponse?[appId]?["data"]?["capsule_image"]?.ToString();
                     if (!string.IsNullOrEmpty(imageUrl))
                     {
-                        // Download the image
                         byte[] imageBytes = await httpClient.GetByteArrayAsync(imageUrl);
-
-                        // Save the image to the cache folder
                         File.WriteAllBytes(imagePath, imageBytes);
                     }
                 }
             }
             else
             {
-                using (HttpClient httpClient = new HttpClient())
-                {
-                    var response = await httpClient.GetAsync($"https://store.steampowered.com/api/appdetails?appids={appId}");
-                    jsonResponse = JObject.Parse(await response.Content.ReadAsStringAsync());
-
-                    if (!bool.TryParse(jsonResponse[appId]?["success"]?.ToString(), out bool success) || !success)
-                        return new List<string>() { "", "", "" };
-                }
+                var content = File.ReadAllText(jsonPath);
+                jsonResponse = JObject.Parse(content);
             }
 
             var dlcCount = jsonResponse[appId]?["data"]?["dlc"]?.Count() ?? 0;
+            string dlc_string = dlcCount == 0 ? "" : $"DLC Count: {dlcCount}";
 
             return new List<string>
             {
                 jsonResponse[appId]["data"]["type"]?.ToString(),
-                $"DLC Count: {dlcCount}",
+                dlc_string,
                 imagePath
             };
         }
