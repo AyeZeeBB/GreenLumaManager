@@ -38,15 +38,13 @@ namespace GreenLumaManager
 
             if (string.IsNullOrEmpty(Settings.Default.FolderPath) && Directory.Exists("C:\\Program Files (x86)\\Steam\\AppList\\"))
             {
-                folder_path.Text = "C:\\Program Files (x86)\\Steam\\AppList\\";
-                Settings.Default.FolderPath = folder_path.Text;
+                Settings.Default.FolderPath = "C:\\Program Files (x86)\\Steam\\AppList\\";
                 Settings.Default.Save();
                 RefreshListAsync();
             }
 
             if(!string.IsNullOrEmpty(Settings.Default.FolderPath))
             {
-                folder_path.Text = Settings.Default.FolderPath;
                 RefreshListAsync();
             }
 
@@ -64,16 +62,16 @@ namespace GreenLumaManager
 
         private void RefreshListAsync()
         {
-            if (folder_path.Text == "")
+            if (Settings.Default.FolderPath == "")
                 return;
 
-            if(!Directory.Exists(folder_path.Text))
+            if(!Directory.Exists(Settings.Default.FolderPath))
                 return;
 
             foreach (AppIDItem item in items)
                 item.Dispose();
 
-            string[] txtFiles = Directory.GetFiles(folder_path.Text, "*.txt");
+            string[] txtFiles = Directory.GetFiles(Settings.Default.FolderPath, "*.txt");
 
             items = new List<AppIDItem>();
 
@@ -145,7 +143,7 @@ namespace GreenLumaManager
 
         private void DeleteOldFiles()
         {
-            string[] txtFiles = Directory.GetFiles(folder_path.Text, "*.txt");
+            string[] txtFiles = Directory.GetFiles(Settings.Default.FolderPath, "*.txt");
             foreach (string txtFile in txtFiles)
             {
                 File.Delete(txtFile);
@@ -154,7 +152,7 @@ namespace GreenLumaManager
 
         private void folder_path_TextChanged(object sender, EventArgs e)
         {
-            Settings.Default.FolderPath = folder_path.Text;
+            Settings.Default.FolderPath = Settings.Default.FolderPath;
             Settings.Default.Save();
         }
 
@@ -170,8 +168,8 @@ namespace GreenLumaManager
 
             if (result == DialogResult.OK)
             {
-                folder_path.Text = folderBrowserDialog.SelectedPath;
-                Settings.Default.FolderPath = folder_path.Text;
+                Settings.Default.FolderPath = folderBrowserDialog.SelectedPath;
+                Settings.Default.FolderPath = Settings.Default.FolderPath;
                 Settings.Default.Save();
                 RefreshListAsync();
             }
@@ -184,7 +182,7 @@ namespace GreenLumaManager
             int i = 0;
             foreach (AppIDItem item in items)
             {
-                using (StreamWriter writer = new StreamWriter(folder_path.Text + $"\\{i}.txt"))
+                using (StreamWriter writer = new StreamWriter(Settings.Default.FolderPath + $"\\{i}.txt"))
                 {
                     writer.WriteLine(item.appid_textbox.Text);
                 }
@@ -229,7 +227,7 @@ namespace GreenLumaManager
                 int i = 0;
                 foreach (string line in lines)
                 {
-                    using (StreamWriter writer = new StreamWriter(folder_path.Text + $"\\{i}.txt"))
+                    using (StreamWriter writer = new StreamWriter(Settings.Default.FolderPath + $"\\{i}.txt"))
                     {
                         writer.WriteLine(line);
                     }
@@ -247,9 +245,12 @@ namespace GreenLumaManager
             }
         }
 
+        bool wasGreaterThan7 = false;
+
         public Task AddAppID(string _appid)
         {
             AppIDItem appid = new AppIDItem();
+            appid.Size = items.Count + 1 < 7 ? new Size(1016, 65) : new Size(992, 65);
             appid.SetAppID(_appid);
             appid.mainForm = this;
             appid.Parent = flowLayoutPanel1;
@@ -267,6 +268,7 @@ namespace GreenLumaManager
             {
                 appid.Dispose();
                 items.Remove(appid);
+                FixAllItemsWidth();
             };
 
             appid.app_label.Text = GetAppLabel(_appid);
@@ -279,7 +281,26 @@ namespace GreenLumaManager
 
             items.Add(appid);
 
+            FixAllItemsWidth();
+
             return Task.CompletedTask;
+        }
+
+        private void FixAllItemsWidth()
+        {
+            if (items.Count >= 7 && !wasGreaterThan7)
+                wasGreaterThan7 = true;
+            else if (items.Count < 7 && wasGreaterThan7)
+                wasGreaterThan7 = false;
+            else
+                return;
+
+            Size new_size = items.Count < 7 ? new Size(1016, 65) : new Size(992, 65);
+
+            foreach (AppIDItem item in items)
+            {
+                item.Size = new_size;
+            }
         }
 
         private void guna2Button5_Click(object sender, EventArgs e)

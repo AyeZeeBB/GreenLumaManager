@@ -120,6 +120,7 @@
   <ItemGroup>
     <Content Include="6002f9d851c2ec00048c6c78.ico" />
     <Content Include="luma.ico" />
+    <None Include="Resources\icons8-settings-50.png" />
     <None Include="Resources\capsule_231x87.jpg" />
     <None Include="luma.png" />
   </ItemGroup>
