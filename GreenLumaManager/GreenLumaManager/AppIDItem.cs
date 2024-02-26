@@ -16,8 +16,15 @@ namespace GreenLumaManager
         public string appid_value = "0";
         public int position;
         public Guna2Button close_button;
+        public Guna2Button dlc_button;
         public Guna2TextBox appid_textbox;
         public Guna2HtmlLabel app_label;
+        public Guna2HtmlLabel dlc_label;
+        public Guna2HtmlLabel type_label;
+        public Guna2PictureBox picture_box;
+
+
+        public Form1 mainForm = null;
 
         public AppIDItem()
         {
@@ -31,11 +38,36 @@ namespace GreenLumaManager
             close_button = guna2Button1;
             appid_textbox = guna2TextBox1;
             app_label = guna2HtmlLabel1;
+            picture_box = guna2PictureBox1;
+            dlc_label = dlc_string;
+            type_label = guna2HtmlLabel2;
+            dlc_button = guna2Button2;
         }
 
         private void AppIDItem_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void dlc_string_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void guna2Button2_Click(object sender, EventArgs e)
+        {
+            if(string.IsNullOrEmpty(dlc_label.Text))
+            { return; }
+
+            DLC dlc = new DLC();
+            dlc.Show();
+            dlc.mainForm = mainForm;
+            dlc.PopulateList(appid_value);
+        }
+
+        private void guna2TextBox1_TextChanged(object sender, EventArgs e)
+        {
+            appid_value = guna2TextBox1.Text;
         }
     }
 }

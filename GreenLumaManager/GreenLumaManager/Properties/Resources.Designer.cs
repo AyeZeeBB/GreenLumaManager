@@ -63,6 +63,16 @@ namespace GreenLumaManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap capsule_231x87 {
+            get {
+                object obj = ResourceManager.GetObject("capsule_231x87", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap luma {
             get {
                 object obj = ResourceManager.GetObject("luma", resourceCulture);

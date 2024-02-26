@@ -69,6 +69,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DLC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DLC.Designer.cs">
+      <DependentUpon>DLC.cs</DependentUpon>
+    </Compile>
     <Compile Include="Search.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,6 +97,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="DLC.resx">
+      <DependentUpon>DLC.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Search.resx">
       <DependentUpon>Search.cs</DependentUpon>
     </EmbeddedResource>
@@ -111,6 +120,7 @@
   <ItemGroup>
     <Content Include="6002f9d851c2ec00048c6c78.ico" />
     <Content Include="luma.ico" />
+    <None Include="Resources\capsule_231x87.jpg" />
     <None Include="luma.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

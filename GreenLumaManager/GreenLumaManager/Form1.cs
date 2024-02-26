@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using Guna.UI2.WinForms.Suite;
 
 namespace GreenLumaManager
 {
@@ -23,7 +24,7 @@ namespace GreenLumaManager
         List<AppIDItem> items = new List<AppIDItem>();
 
         string all_appids_json = "";
-        JObject obj = null;
+        public JObject obj = null;
         public Form1()
         {
             InitializeComponent();
@@ -103,6 +104,43 @@ namespace GreenLumaManager
                 return Regex.Replace((string)targetApp["name"], "[^a-zA-Z0-9\\s-]", "");
             else
                 return $"Couldnt Get Apps Name";
+        }
+
+        private List<string> GetAppInfo(string appid)
+        {
+            if (appid == "0")
+                appid = "1";
+
+            string final_appid = string.IsNullOrEmpty(appid) ? "1" : appid;
+            WebClient webClient = new WebClient();
+            string appid_json = webClient.DownloadString($"https://store.steampowered.com/api/appdetails?appids={final_appid}");
+            JObject app = JObject.Parse(appid_json);
+
+            List<string> appData = new List<string> { "","","" };
+
+            bool success = bool.Parse((string)app[final_appid]["success"]);
+            if (!success)
+                return appData;
+
+            var appDLC = app[final_appid]["data"]["dlc"];
+            string dlc_count = $"";
+            if (appDLC != null)
+            {
+                int count = 0;
+                foreach (var item in appDLC)
+                    count++;
+
+                dlc_count = $"DLC Count: {count}";
+            }
+
+            appData = new List<string>
+            {
+                (string)app[final_appid]["data"]["type"],
+                dlc_count,
+                (string)app[final_appid]["data"]["capsule_image"]
+            };
+
+            return appData;
         }
 
         private void DeleteOldFiles()
@@ -209,14 +247,21 @@ namespace GreenLumaManager
             }
         }
 
-        public void AddAppID(string _appid)
+        public Task AddAppID(string _appid)
         {
             AppIDItem appid = new AppIDItem();
             appid.SetAppID(_appid);
+            appid.mainForm = this;
             appid.Parent = flowLayoutPanel1;
             appid.appid_textbox.TextChanged += (sender, e) =>
             {
                 appid.app_label.Text = GetAppLabel(appid.appid_textbox.Text);
+
+                List<string> list2 = GetAppInfo(appid.appid_textbox.Text);
+                appid.picture_box.ImageLocation = list2[2];
+                appid.dlc_label.Text = list2[1];
+                appid.type_label.Text = list2[0].ToUpper();
+                appid.dlc_button.Visible = !string.IsNullOrEmpty(list2[1]);
             };
             appid.close_button.Click += (sender, e) =>
             {
@@ -226,7 +271,15 @@ namespace GreenLumaManager
 
             appid.app_label.Text = GetAppLabel(_appid);
 
+            List<string> list = GetAppInfo(_appid);
+            appid.picture_box.ImageLocation = list[2];
+            appid.dlc_label.Text = list[1];
+            appid.type_label.Text = list[0].ToUpper();
+            appid.dlc_button.Visible = !string.IsNullOrEmpty(list[1]);
+
             items.Add(appid);
+
+            return Task.CompletedTask;
         }
 
         private void guna2Button5_Click(object sender, EventArgs e)
