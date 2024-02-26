@@ -67,7 +67,30 @@ namespace GreenLumaManager
 
         private void guna2TextBox1_TextChanged(object sender, EventArgs e)
         {
-            appid_value = guna2TextBox1.Text;
+            Guna2TextBox textBox = (Guna2TextBox)sender;
+            string text = textBox.Text;
+
+            // Remove any non-numeric characters
+            string filteredText = new string(text.Where(char.IsDigit).ToArray());
+
+            // Update the TextBox text if it was modified
+            if (filteredText != text)
+            {
+                textBox.Text = filteredText;
+
+                // Move the cursor to the end of the text
+                textBox.SelectionStart = textBox.Text.Length;
+            }
+        }
+
+        private void guna2TextBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Check if the pressed key is a digit or a control key (like backspace or delete)
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                // Mark the event as handled to prevent the character from being entered
+                e.Handled = true;
+            }
         }
     }
 }

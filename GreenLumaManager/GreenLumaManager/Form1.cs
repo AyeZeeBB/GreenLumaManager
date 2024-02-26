@@ -47,20 +47,35 @@ namespace GreenLumaManager
             {
                 RefreshListAsync();
             }
-
-            if (string.IsNullOrEmpty(Settings.Default.SavedAppIds))
-            {
-                guna2Button4.Text = "AppList Is Enabled!";
-                guna2Button4.ForeColor = Color.White;
-            }
             else
             {
-                guna2Button4.Text = "AppList Is Disabled";
-                guna2Button4.ForeColor = Color.Red;
+                MessageBox.Show("Please select the path to your Greenlumas AppList Folder");
+
+                using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
+                {
+                    DialogResult result = folderBrowserDialog.ShowDialog();
+
+                    if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(folderBrowserDialog.SelectedPath))
+                    {
+                        string selectedFolder = folderBrowserDialog.SelectedPath;
+                        Settings.Default.FolderPath = selectedFolder;
+                        Settings.Default.Save();
+                    }
+                    else
+                    {
+                        Application.Exit();
+                    }
+                }
+
+                RefreshListAsync();
             }
+
+
+            guna2Button4.Text = string.IsNullOrEmpty(Settings.Default.SavedAppIds) ? "AppList Is Enabled!" : "AppList Is Disabled";
+            guna2Button4.ForeColor = string.IsNullOrEmpty(Settings.Default.SavedAppIds) ? Color.White : Color.Red;
         }
 
-        private void RefreshListAsync()
+        private async void RefreshListAsync()
         {
             if (Settings.Default.FolderPath == "")
                 return;
@@ -86,7 +101,7 @@ namespace GreenLumaManager
                     string line;
                     while ((line = reader.ReadLine()) != null)
                     {
-                        AddAppID(line);
+                        await AddAppID(line);
                     }
                 }
             }
@@ -94,6 +109,8 @@ namespace GreenLumaManager
 
         private string GetAppLabel(string appid)
         {
+            appid = Regex.Replace(appid, "[^0-9]", "");
+
             var appsArray = obj["applist"]["apps"];
             int targetAppId = string.IsNullOrEmpty(appid) ? 0 : int.Parse(appid);
             var targetApp = appsArray.FirstOrDefault(app => (int)app["appid"] == targetAppId);
@@ -104,41 +121,64 @@ namespace GreenLumaManager
                 return $"Couldnt Get Apps Name";
         }
 
-        private List<string> GetAppInfo(string appid)
+        private async Task<List<string>> GetAppInfo(string appId)
         {
-            if (appid == "0")
-                appid = "1";
+            appId = Regex.Replace(appId, "[^0-9]", "");
 
-            string final_appid = string.IsNullOrEmpty(appid) ? "1" : appid;
-            WebClient webClient = new WebClient();
-            string appid_json = webClient.DownloadString($"https://store.steampowered.com/api/appdetails?appids={final_appid}");
-            JObject app = JObject.Parse(appid_json);
+            if (appId == "0" || string.IsNullOrEmpty(appId))
+                appId = "1";
 
-            List<string> appData = new List<string> { "","","" };
-
-            bool success = bool.Parse((string)app[final_appid]["success"]);
-            if (!success)
-                return appData;
-
-            var appDLC = app[final_appid]["data"]["dlc"];
-            string dlc_count = $"";
-            if (appDLC != null)
+            string cacheFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cache");
+            if (!Directory.Exists(cacheFolderPath))
             {
-                int count = 0;
-                foreach (var item in appDLC)
-                    count++;
-
-                dlc_count = $"DLC Count: {count}";
+                Directory.CreateDirectory(cacheFolderPath);
             }
 
-            appData = new List<string>
-            {
-                (string)app[final_appid]["data"]["type"],
-                dlc_count,
-                (string)app[final_appid]["data"]["capsule_image"]
-            };
+            string imagePath = Path.Combine(cacheFolderPath, $"{appId}.jpg");
 
-            return appData;
+            JObject jsonResponse = null;
+
+            if (!File.Exists(imagePath))
+            {
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    var response = await httpClient.GetAsync($"https://store.steampowered.com/api/appdetails?appids={appId}");
+                    jsonResponse = JObject.Parse(await response.Content.ReadAsStringAsync());
+
+                    if (!bool.TryParse(jsonResponse[appId]?["success"]?.ToString(), out bool success) || !success)
+                        return new List<string>() { "", "", "" };
+
+                    string imageUrl = jsonResponse[appId]["data"]["capsule_image"]?.ToString();
+                    if (!string.IsNullOrEmpty(imageUrl))
+                    {
+                        // Download the image
+                        byte[] imageBytes = await httpClient.GetByteArrayAsync(imageUrl);
+
+                        // Save the image to the cache folder
+                        File.WriteAllBytes(imagePath, imageBytes);
+                    }
+                }
+            }
+            else
+            {
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    var response = await httpClient.GetAsync($"https://store.steampowered.com/api/appdetails?appids={appId}");
+                    jsonResponse = JObject.Parse(await response.Content.ReadAsStringAsync());
+
+                    if (!bool.TryParse(jsonResponse[appId]?["success"]?.ToString(), out bool success) || !success)
+                        return new List<string>() { "", "", "" };
+                }
+            }
+
+            var dlcCount = jsonResponse[appId]?["data"]?["dlc"]?.Count() ?? 0;
+
+            return new List<string>
+            {
+                jsonResponse[appId]["data"]["type"]?.ToString(),
+                $"DLC Count: {dlcCount}",
+                imagePath
+            };
         }
 
         private void DeleteOldFiles()
@@ -156,9 +196,9 @@ namespace GreenLumaManager
             Settings.Default.Save();
         }
 
-        private void guna2Button1_Click(object sender, EventArgs e)
+        private async void guna2Button1_Click(object sender, EventArgs e)
         {
-            AddAppID("730");
+            await AddAppID("730");
         }
 
         private void guna2Button3_Click(object sender, EventArgs e)
@@ -247,18 +287,19 @@ namespace GreenLumaManager
 
         bool wasGreaterThan7 = false;
 
-        public Task AddAppID(string _appid)
+        public async Task AddAppID(string _appid)
         {
             AppIDItem appid = new AppIDItem();
             appid.Size = items.Count + 1 < 7 ? new Size(1016, 65) : new Size(992, 65);
             appid.SetAppID(_appid);
             appid.mainForm = this;
             appid.Parent = flowLayoutPanel1;
-            appid.appid_textbox.TextChanged += (sender, e) =>
+            appid.appid_textbox.TextChanged += async (sender, e) =>
             {
+                appid.appid_value = appid.appid_textbox.Text;
                 appid.app_label.Text = GetAppLabel(appid.appid_textbox.Text);
 
-                List<string> list2 = GetAppInfo(appid.appid_textbox.Text);
+                List<string> list2 = await GetAppInfo(appid.appid_textbox.Text);
                 appid.picture_box.ImageLocation = list2[2];
                 appid.dlc_label.Text = list2[1];
                 appid.type_label.Text = list2[0].ToUpper();
@@ -273,7 +314,7 @@ namespace GreenLumaManager
 
             appid.app_label.Text = GetAppLabel(_appid);
 
-            List<string> list = GetAppInfo(_appid);
+            List<string> list = await GetAppInfo(_appid);
             appid.picture_box.ImageLocation = list[2];
             appid.dlc_label.Text = list[1];
             appid.type_label.Text = list[0].ToUpper();
@@ -282,8 +323,6 @@ namespace GreenLumaManager
             items.Add(appid);
 
             FixAllItemsWidth();
-
-            return Task.CompletedTask;
         }
 
         private void FixAllItemsWidth()
@@ -296,6 +335,8 @@ namespace GreenLumaManager
                 return;
 
             Size new_size = items.Count < 7 ? new Size(1016, 65) : new Size(992, 65);
+            Size panel_size = items.Count < 7 ? new Size(1015, 32) : new Size(991, 32);
+            guna2Panel2.Size = panel_size;
 
             foreach (AppIDItem item in items)
             {

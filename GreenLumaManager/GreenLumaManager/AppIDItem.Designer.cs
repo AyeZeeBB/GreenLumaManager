@@ -65,7 +65,7 @@
             this.guna2TextBox1.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(43)))), ((int)(((byte)(59)))));
             this.guna2TextBox1.HoverState.Parent = this.guna2TextBox1;
             this.guna2TextBox1.Location = new System.Drawing.Point(178, 35);
-            this.guna2TextBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.guna2TextBox1.Margin = new System.Windows.Forms.Padding(4);
             this.guna2TextBox1.Name = "guna2TextBox1";
             this.guna2TextBox1.PasswordChar = '\0';
             this.guna2TextBox1.PlaceholderForeColor = System.Drawing.Color.White;
@@ -76,6 +76,7 @@
             this.guna2TextBox1.Size = new System.Drawing.Size(86, 26);
             this.guna2TextBox1.TabIndex = 0;
             this.guna2TextBox1.TextChanged += new System.EventHandler(this.guna2TextBox1_TextChanged);
+            this.guna2TextBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.guna2TextBox1_KeyPress);
             // 
             // guna2HtmlLabel1
             // 
@@ -116,7 +117,7 @@
             // 
             // guna2Elipse1
             // 
-            this.guna2Elipse1.BorderRadius = 2;
+            this.guna2Elipse1.BorderRadius = 0;
             this.guna2Elipse1.TargetControl = this;
             // 
             // dlc_string
@@ -184,7 +185,6 @@
             // 
             // guna2PictureBox1
             // 
-            this.guna2PictureBox1.Image = global::GreenLumaManager.Properties.Resources.capsule_231x87;
             this.guna2PictureBox1.Location = new System.Drawing.Point(0, 0);
             this.guna2PictureBox1.Name = "guna2PictureBox1";
             this.guna2PictureBox1.ShadowDecoration.Parent = this.guna2PictureBox1;
@@ -218,6 +218,7 @@
             this.Controls.Add(this.guna2PictureBox1);
             this.Controls.Add(this.guna2Button1);
             this.Controls.Add(this.guna2GradientPanel1);
+            this.DoubleBuffered = true;
             this.Name = "AppIDItem";
             this.Size = new System.Drawing.Size(1016, 65);
             this.Load += new System.EventHandler(this.AppIDItem_Load);

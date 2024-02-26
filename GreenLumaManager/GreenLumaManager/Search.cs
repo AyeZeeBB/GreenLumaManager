@@ -47,7 +47,7 @@ namespace GreenLumaManager
 
             Parallel.ForEach(appsArray, app =>
             {
-                string appName = Regex.Replace((string)app["name"], "[^a-zA-Z0-9\\s-]", ""); ;
+                string appName = Regex.Replace((string)app["name"], "[^a-zA-Z0-9\\s-]", "");
                 if (appName.ToLower().Contains(search))
                 {
                     int appId = (int)app["appid"];
