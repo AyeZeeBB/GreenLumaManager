@@ -164,6 +164,9 @@ namespace GreenLumaManager
             {
                 var content = File.ReadAllText(jsonPath);
                 jsonResponse = JObject.Parse(content);
+
+                if (!bool.TryParse(jsonResponse?[appId]?["success"]?.ToString(), out bool success) || !success)
+                    return new List<string>() { "", "", "" };
             }
 
             var dlcCount = jsonResponse[appId]?["data"]?["dlc"]?.Count() ?? 0;
@@ -213,6 +216,8 @@ namespace GreenLumaManager
 
         private void guna2Button2_Click(object sender, EventArgs e)
         {
+            saving.Visible = true;
+
             DeleteOldFiles();
 
             int i = 0;
@@ -227,6 +232,8 @@ namespace GreenLumaManager
             }
 
             RefreshListAsync();
+
+            saving.Visible = false;
         }
 
         private void guna2Button4_Click(object sender, EventArgs e)
