@@ -200,20 +200,6 @@ namespace GreenLumaManager
             await AddAppID("730");
         }
 
-        private void guna2Button3_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
-            DialogResult result = folderBrowserDialog.ShowDialog();
-
-            if (result == DialogResult.OK)
-            {
-                Settings.Default.FolderPath = folderBrowserDialog.SelectedPath;
-                Settings.Default.FolderPath = Settings.Default.FolderPath;
-                Settings.Default.Save();
-                RefreshListAsync();
-            }
-        }
-
         private void guna2Button2_Click(object sender, EventArgs e)
         {
             saving.Visible = true;
@@ -353,6 +339,12 @@ namespace GreenLumaManager
             search.mainForm = this;
             search.obj = obj;
             search.Show();
+        }
+
+        private void guna2Button3_Click_1(object sender, EventArgs e)
+        {
+            SettingsForm settingsForm = new SettingsForm();
+            settingsForm.Show();
         }
     }
 

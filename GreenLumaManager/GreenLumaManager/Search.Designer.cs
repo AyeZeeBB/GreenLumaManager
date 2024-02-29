@@ -32,7 +32,6 @@
             this.search_text = new Guna.UI2.WinForms.Guna2TextBox();
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             this.guna2HtmlLabel4 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.guna2PictureBox1 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.guna2ControlBox1 = new Guna.UI2.WinForms.Guna2ControlBox();
             this.guna2HtmlLabel3 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2Button2 = new Guna.UI2.WinForms.Guna2Button();
@@ -44,6 +43,7 @@
             this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
             this.searching = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.search_label = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.guna2PictureBox1 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.guna2Panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -101,17 +101,6 @@
             this.guna2HtmlLabel4.Size = new System.Drawing.Size(70, 19);
             this.guna2HtmlLabel4.TabIndex = 19;
             this.guna2HtmlLabel4.Text = "App Search";
-            // 
-            // guna2PictureBox1
-            // 
-            this.guna2PictureBox1.Image = global::GreenLumaManager.Properties.Resources.luma;
-            this.guna2PictureBox1.Location = new System.Drawing.Point(3, 3);
-            this.guna2PictureBox1.Name = "guna2PictureBox1";
-            this.guna2PictureBox1.ShadowDecoration.Parent = this.guna2PictureBox1;
-            this.guna2PictureBox1.Size = new System.Drawing.Size(27, 24);
-            this.guna2PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.guna2PictureBox1.TabIndex = 20;
-            this.guna2PictureBox1.TabStop = false;
             // 
             // guna2ControlBox1
             // 
@@ -234,6 +223,17 @@
             this.search_label.Size = new System.Drawing.Size(170, 19);
             this.search_label.TabIndex = 24;
             this.search_label.Text = "Please search for somthing...";
+            // 
+            // guna2PictureBox1
+            // 
+            this.guna2PictureBox1.Image = global::GreenLumaManager.Properties.Resources.luma;
+            this.guna2PictureBox1.Location = new System.Drawing.Point(3, 3);
+            this.guna2PictureBox1.Name = "guna2PictureBox1";
+            this.guna2PictureBox1.ShadowDecoration.Parent = this.guna2PictureBox1;
+            this.guna2PictureBox1.Size = new System.Drawing.Size(27, 24);
+            this.guna2PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.guna2PictureBox1.TabIndex = 20;
+            this.guna2PictureBox1.TabStop = false;
             // 
             // Search
             // 
